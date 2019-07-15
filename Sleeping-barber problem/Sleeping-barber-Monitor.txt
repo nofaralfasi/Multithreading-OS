@@ -1,0 +1,34 @@
+// As a monitor
+
+monitor barbershop {
+  int num_waiting;
+  condition get_cut;
+  condition barber_asleep;
+  condition in_chair;
+  condition cut_done;
+
+  Barber routine
+  barber() {
+    while (1);
+      while (num_waiting == 0) {  
+        barber_asleep.wait();
+      }
+      customer_waiting.signal();
+      in_chair.wait();  
+      give_hait_cut();
+      cut_done.signal();
+    }
+  Customer routine
+  customer () {
+    if (num_waiting == n) {
+      return;
+    }
+    if (num_waiting == 0) {
+      barber_asleep.signal();
+    }
+    customer_waiting.wait();
+    in_char.signal();
+    get_hair_cut();
+    cut_done.wait();
+  }
+ 

@@ -1,0 +1,31 @@
+// Barber Code
+
+wait(mutex)
+if (customers_waiting == 0) {
+  signal(mutex);
+  wait(barber_sleeping);
+  wait(mutex);
+}
+customers_waiting--;
+signal(mutex);
+signal(customer_queue);
+do_cut_hair();
+signal(cut_done);
+
+
+// Customer Code
+
+wait(mutex);
+if (customers_waiting == n) {
+   signal(mutex);
+   return;
+}
+customers_waiting++;
+if (customers_waiting == 1) {
+  signal(barber_sleeping);
+}
+signal(mutex);
+wait(customer_queue);
+get_hair_cut();
+wait(cut_done);
+
